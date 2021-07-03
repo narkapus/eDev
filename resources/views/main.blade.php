@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'table', 'titlePage' => __('รายการเอกสาร')])
+@extends('layouts.app', ['activePage' => 'main', 'titlePage' => __('รายการเอกสาร')])
 
 @section('content')
 <?php
@@ -9,9 +9,18 @@ $date = Carbon\Carbon::now();
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-primary" style="background: #B6EEBD">
+          <div class="card-header card-header-primary" style="background: #B6EEBD;padding-bottom: 0px;">
             <h4 class="card-title" style="color:#0F0E0F">รายการล่าสุด</h4>
-            <p class="card-category" style="color:#0F0E0F">วันที่ <?php echo date("d/m/Y", strtotime($date)); ?></p>
+            <div class="row">
+                <p class="card-category col-sm-8" style="color:#0F0E0F;margin-top:10px">วันที่ <?php echo date("d/m/Y", strtotime($date)); ?></p>
+                <div class="form-group text-right col-sm-4">
+                    <label for="upload_file" class="control-label col-sm-4">
+                    <a><img src="{{ asset('material') }}/img/upload.png" alt="logo"/></a></label>
+                    <div class="col-sm-12">
+                         <input class="form-control" type="file" name="upload_file" id="upload_file">
+                    </div>
+               </div>
+            </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
