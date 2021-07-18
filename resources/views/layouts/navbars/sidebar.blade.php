@@ -23,22 +23,10 @@
             <p>{{ __('ค้นหาเอกสาร') }}</p>
         </a>
       </li>
-      <li class="nav-item{{ $activePage == 'table' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('table') }}">
-          <i class="material-icons">content_paste</i>
-            <p>{{ __('Table List') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'typography' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('typography') }}">
-          <i class="material-icons">library_books</i>
-            <p>{{ __('Typography') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'notifications' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('notifications') }}">
-          <i class="material-icons">notifications</i>
-          <p>{{ __('Notifications') }}</p>
+      <li class="nav-item{{ $activePage == 'manage_documents' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('manage') }}">
+          <i class="material-icons">description</i>
+            <p>{{ __('จัดการประเภทเอกสาร') }}</p>
         </a>
       </li>
     </ul>

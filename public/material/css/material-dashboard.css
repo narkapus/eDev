@@ -12596,7 +12596,7 @@ fieldset[disabled][disabled] .has-rose .form-control,
 .bmd-form-group .form-control,
 .bmd-form-group label,
 .bmd-form-group input::placeholder {
-  line-height: 1.1;
+  line-height: 2.1;
 }
 
 .bmd-form-group label {
@@ -12672,7 +12672,7 @@ fieldset[disabled][disabled] .has-rose .form-control,
 .bmd-form-group.bmd-form-group-sm .form-control,
 .bmd-form-group.bmd-form-group-sm label,
 .bmd-form-group.bmd-form-group-sm input::placeholder {
-  line-height: 1.1;
+  line-height: 2.1;
 }
 
 .bmd-form-group.bmd-form-group-sm label {
@@ -12748,7 +12748,7 @@ fieldset[disabled][disabled] .has-rose .form-control,
 .bmd-form-group.bmd-form-group-lg .form-control,
 .bmd-form-group.bmd-form-group-lg label,
 .bmd-form-group.bmd-form-group-lg input::placeholder {
-  line-height: 1.1;
+  line-height: 2.1;
 }
 
 .bmd-form-group.bmd-form-group-lg label {
@@ -12824,7 +12824,7 @@ fieldset[disabled][disabled] .has-rose .form-control,
 .form-control,
 label,
 input::placeholder {
-  line-height: 1.1;
+  line-height: 2.1;
 }
 
 label {

@@ -22,37 +22,12 @@ Auth::routes();
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('search', function () {
-		return view('pages.search');
-	})->name('search');
+    Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
+    // Route::post('/search', 'App\Http\Controllers\SearchController@index')->name('search');
+});
 
-	Route::get('table-list', function () {
-		return view('pages.table_list');
-	})->name('table');
-
-	Route::get('typography', function () {
-		return view('pages.typography');
-	})->name('typography');
-
-	Route::get('icons', function () {
-		return view('pages.icons');
-	})->name('icons');
-
-	Route::get('map', function () {
-		return view('pages.map');
-	})->name('map');
-
-	Route::get('notifications', function () {
-		return view('pages.notifications');
-	})->name('notifications');
-
-	Route::get('rtl-support', function () {
-		return view('pages.language');
-	})->name('language');
-
-	Route::get('upgrade', function () {
-		return view('pages.upgrade');
-	})->name('upgrade');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/manage', 'App\Http\Controllers\ManageDocumentController@index')->name('manage');
 });
 
 Route::group(['middleware' => 'auth'], function () {
