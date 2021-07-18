@@ -54,7 +54,7 @@
                             <tr>
                                 <td>{{ $item->eCode }}</td>
                                 <td>{{ $item->eName }}</td>
-                                <td>{{ $item->userId }}</td>
+                                <td>{{ $item->name }}</td>
                                 <td>{{ $item->createDate }}</td>
                             </tr>
                         @endforeach
