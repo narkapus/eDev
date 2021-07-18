@@ -25,7 +25,7 @@
                           วันที่แก้ไขล่าสุด
                         </th>
                         <th style="text-align: center; font-weight:bold;">
-                            UserUpdate
+                          ผู้อัพโหลด
                         </th>
                       </thead>
                         @foreach($items as $key => $data)
@@ -34,7 +34,7 @@
                           <th>{{$data->eName}}</th>
                           <th>{{$data->createDate}}</th>
                           <th>{{$data->update_Date}}</th>
-                          <th style="text-align: center">{{$data->createUser}}</th>
+                          <th style="text-align: center">{{$data->name}}</th>
                         </tr>
                     @endforeach
                     </table>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\MasterDocuments;
+use Illuminate\Support\Facades\DB;
 
 class ManageDocumentController extends Controller
 {
@@ -22,7 +23,9 @@ class ManageDocumentController extends Controller
      */
     public function index()
     {
-        $items = MasterDocuments::all();
+        $items = DB::table('master_documents')
+                ->join('users','users.id','=','master_documents.createUser')
+                ->get();
         return view('pages.manage_documents')->with('items',$items);
     }
 }
