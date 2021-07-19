@@ -23,11 +23,11 @@ Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
-    // Route::post('/search', 'App\Http\Controllers\SearchController@index')->name('search');
 });
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/manage', 'App\Http\Controllers\ManageDocumentController@index')->name('manage');
+    Route::post('/manage/postSave', 'App\Http\Controllers\ManageDocumentController@create')->name('manage.create');
 });
 
 Route::group(['middleware' => 'auth'], function () {

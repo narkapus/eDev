@@ -32,7 +32,7 @@ class SearchController extends Controller
         $items = MasterDocuments::pluck('eName');
         $user = User::pluck('name');
 
-        $posts = DB::table('documents')
+        $posts = DB::table('documents')->take(10)
                 ->join('users','users.id','=','documents.userId');
                 if($search){
                     $posts->where('eCode','=',$search);

@@ -8,7 +8,6 @@
         <div class="card">
           <div class="card-body">
             <form action="/manage" method="POST" role="search">
-                {{ csrf_field() }}
                 <div class="table-responsive">
                     <table class="table">
                       <thead>
@@ -32,12 +31,17 @@
                         <tr>
                           <th style="text-align: center">{{$data->eCode}}</th>
                           <th>{{$data->eName}}</th>
-                          <th>{{$data->createDate}}</th>
-                          <th>{{$data->update_Date}}</th>
+                          <th>{{$data->created_at}}</th>
+                          <th>{{$data->updated_at}}</th>
                           <th style="text-align: center">{{$data->name}}</th>
                         </tr>
                     @endforeach
                     </table>
+                        <div class="col-md-3">
+                            <button type="button" id="add" class="btn btn-default" onclick="addData()">
+                                เพิ่มเอกสาร
+                            </button>
+                        </div>
                   </div>
             </form>
           </div>
@@ -46,4 +50,42 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form  class="form-submit" id="addForm" method="post"  action="{{ url('/manage/postSave') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มประเภทเอกสาร</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ csrf_field() }}
+                    <span id="form_output"></span>
+                    <div class="form-group">
+                        <label>รหัสเอกสาร</label>
+                        <input type="text" name="eCode" id="eCode" value="" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>ประเภทเอกสาร</label>
+                        <input type="text" name="eName" id="eName" value="" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="action" value="Add" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
+<script type="text/javascript">
+var table = document.getElementById('add');
+function addData(){
+    $('#addModal').modal('show');
+        $('#addForm')[0].reset();
+        $('#action').val('Add');
+}
+</script>
