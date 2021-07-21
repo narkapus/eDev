@@ -23,6 +23,7 @@ Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
+    Route::post('/search/save', 'App\Http\Controllers\SearchController@create')->name('search.create');
 });
 
 Route::group(['middleware' => 'auth'], function () {
