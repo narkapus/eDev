@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\MasterDocuments;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Exception;
 
 class ManageDocumentController extends Controller
 {
@@ -22,14 +23,13 @@ class ManageDocumentController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
-        echo $request->eCode;
         $items = DB::table('master_documents')->select('eCode','eName','name','master_documents.created_at','master_documents.updated_at')->take(10)
                 ->join('users','users.id','=','master_documents.createUser')
                 ->orderBy('master_documents.created_at','desc')
                 ->get();
-        $geteDoc = DB::table('master_documents')->where('eCode','1')->get();
+        $geteDoc = DB::table('master_documents')->where('eCode','')->get();
         return view('pages.manage_documents',['items' => $items,'geteDoc' => $geteDoc]);
     }
 
@@ -44,7 +44,8 @@ class ManageDocumentController extends Controller
         return redirect()->route("manage")->with('message','Success');
     }
 
-    public function edit($eName){
-         print_r(5555);
+    public function update(Request $request)
+    {
+        echo 5555;
     }
 }

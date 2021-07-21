@@ -34,7 +34,7 @@
                           <th>{{$data->created_at}}</th>
                           <th>{{$data->updated_at}}</th>
                           <th style="text-align: center">{{$data->name}}</th>
-                          <th><a onclick="editData(this.id)"><i class="material-icons">edit</i><a></th>
+                          <th><a value ="{{ $data->eCode }}" onclick="editData('{{ $data->eCode }}')"><i class="material-icons">edit</i><a></th>
                         </tr>
                     @endforeach
                     </table>
@@ -93,7 +93,6 @@
                 </div>
                 <div class="modal-body">
                     @foreach($geteDoc as $key => $data)
-                    <?php print_r($data);  ?>
                     <span id="form_output"></span>
                     <div class="form-group">
                         <label>รหัสเอกสาร</label>
@@ -117,13 +116,14 @@
 <script type="text/javascript">
 function addData(){
     $('#addModal').modal('show');
-        $('#addForm')[0].reset();
-        $('#action').val('Add');
+    $('#addForm')[0].reset();
+    $('#action').val('Add');
 }
 
-    function editData(){
-        $('#addModal2').modal('show');
-            $('#addForm2')[0].reset();
-            $('#action2').val('addEdit');
-    }
+function editData(eCode){
+    alert(eCode);
+    $('#addModal2').modal('show');
+    $('#addForm2')[0].reset();
+    $('#action2').val('addEdit');
+}
 </script>

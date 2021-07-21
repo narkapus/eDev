@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/manage', 'App\Http\Controllers\ManageDocumentController@index')->name('manage');
     Route::post('/manage/postSave', 'App\Http\Controllers\ManageDocumentController@create')->name('manage.create');
-    Route::get('/manage/postEdit/{eCode}', 'App\Http\Controllers\ManageDocumentController@edit')->name('manage.edit');
+    Route::get('/manage/update', 'App\Http\Controllers\ManageDocumentController@update')->name('manage.update');
 });
 
 Route::group(['middleware' => 'auth'], function () {
