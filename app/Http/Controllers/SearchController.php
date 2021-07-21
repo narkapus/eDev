@@ -35,7 +35,7 @@ class SearchController extends Controller
         $items = MasterDocuments::pluck('eName');
         $user = User::pluck('name');
 
-        $posts = DB::table('documents')->take(10)
+        $posts = DB::table('documents')->select('eCode','eName','name','documents.created_at')->take(10)
                 ->join('users','users.id','=','documents.userId');
                 if($search){
                     $posts->where('eCode','=',$search);
@@ -53,7 +53,7 @@ class SearchController extends Controller
 
     public function create(Request $request)
     {
-        
+
         $uploadedFile = $request->file('eFile');
         $fileName = time()."/".$uploadedFile->getClientOriginalName();
         $filePath = $request->file('eFile')->storeAs('uploads', $fileName, 'public');
