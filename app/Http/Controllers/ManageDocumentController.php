@@ -25,7 +25,7 @@ class ManageDocumentController extends Controller
     public function index(Request $request)
     {
         echo $request->eCode;
-        $items = DB::table('master_documents')->take(10)
+        $items = DB::table('master_documents')->select('eCode','eName','name','master_documents.created_at','master_documents.updated_at')->take(10)
                 ->join('users','users.id','=','master_documents.createUser')
                 ->orderBy('master_documents.created_at','desc')
                 ->get();
