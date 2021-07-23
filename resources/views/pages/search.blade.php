@@ -1,16 +1,10 @@
 @extends('layouts.app', ['activePage' => 'search', 'titlePage' => __('ค้นหาเอกสาร')])
 
 @section('content')
-<script src="{{ asset('material') }}/js/plugins/jquery-2.2.4.min.js"></script> 
 <div class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="">
-            <button id="addDocument" class="btn btn-success" onclick="addDocument()">
-                เพิ่มเอกสาร
-            </button>
-        </div>
         <div class="card">
           <div class="card-body">
             <form class="form-submit" method="GET"  action="{{ url('/search') }}">
@@ -73,64 +67,6 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="modalAddDocument" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <form  class="form-submit" id="addFormDoc" method="post"  action="{{ url('/search/save') }}" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มเอกสาร</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ csrf_field() }}
-                    <span id="form_output"></span>
-                    <div class="form-group">
-                        <label>ประเภทเอกสาร</label>
-                        <select class="form-control" name="eCode" id="eCode">
-                            @if(!empty($items))
-                            <option value="" disabled selected>เลือกประเภทเอกสาร</option>
-                            @foreach ($items as $key => $value)
-                                <option value="{{ $key+1 }}" {{ ( $key+1 ) ? 'เลือกข้อมูล' : '' }}>
-                                    {{ $value }}
-                                </option>
-                            @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>ประเภทเอกสาร</label>
-                        <div class="col-md-6">
-                            <input class="form-control" id="filename" name='filename' type="text" style="readonly:true;">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="eFile" class="custom-file-upload">
-                                <i class="fa fa-cloud-upload"></i> Upload file
-                            </label>
-                            <input id="eFile" name='eFile' class="file" type="file" style="display:none;" multiple data-preview-file-type="any" data-upload-url="#">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="action" value="Add" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <script type="text/javascript">
-var table = document.getElementById('addDocument');
-function addDocument(){
-    $('#modalAddDocument').modal('show');
-        $('#addFormDoc')[0].reset();
-        $('#action').val('Add');
-}
-$('#eFile').change(function() {
-  var i = $(this).prev('label').clone();
-  var file = $('#eFile')[0].files[0].name;
-  $("#filename").val(file);
-});
 </script>
 @endsection
