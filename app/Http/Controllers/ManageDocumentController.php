@@ -2,50 +2,68 @@
 
 namespace App\Http\Controllers;
 use App\Models\MasterDocuments;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use DataTables;
+use Redirect,Response;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class ManageDocumentController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function index(Request $request)
     {
-        $this->middleware('auth');
+        if ($request->ajax()) {
+            $data = MasterDocuments::latest()->get();
+
+        return Datatables::of($data)->addIndexColumn()->addColumn('action', function($row){
+            $action = '
+            <i class="material-icons"><a id="edit-doc" data-toggle="modal" data-id='.$row->eCode.'>edit</a></i>
+            <meta name="csrf-token" content="{{ csrf_token() }}">
+            <i class="material-icons"><a id="delete-doc" data-id='.$row->eCode.'>delete</a></i>';
+            return $action;
+            })->rawColumns(['action'])->make(true);
+        }
+            return view('pages.manage_documents');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function store(Request $request)
     {
-        $items = DB::table('master_documents')->select('eCode','eName','name','master_documents.created_at','master_documents.updated_at')->take(10)
-                ->join('users','users.id','=','master_documents.createUser')
-                ->orderBy('master_documents.created_at','desc')
-                ->get();
-        $geteDoc = DB::table('master_documents')->where('eCode','')->get();
-        return view('pages.manage_documents',['items' => $items,'geteDoc' => $geteDoc]);
+        $rule = [
+            'eCode' => 'required',
+            'eName' => 'required',
+        ];
+        $message = [
+            'eCode.required' => 'Please enter eCode.',
+            'eName.required' => 'Please enter eName.',
+        ];
+        try {
+            $validator = Validator::make($request->all(), $rule, $message);
+            if ($validator->fails()) {
+                return responseJson(400, $validator->errors()->first());
+            }
+                $uId = $request->eCode;
+                MasterDocuments::updateOrCreate(['eCode' => $uId],['eName' =>$request->eName]);
+            if(empty($request->id))
+                $msg = 'created successfully.';
+            else
+                $msg = 'Data is updated successfully';
+            return redirect()->route('manage.index')->with('success',$msg);
+
+        }   catch (Exception $ex) {
+            return abort(500, $ex->getMessage());
+        }
     }
 
-    public function create(Request $request)
+    public function edit($id)
     {
-        $mDocument = new MasterDocuments();
-
-        $mDocument->eCode = $request->input('eCode');
-        $mDocument->eName = $request->input('eName');
-        $mDocument->createUser = auth()->id();
-        $mDocument->save();
-        return redirect()->route("manage")->with('message','Success');
+        $where = array('eCode' => $id);
+        $doc = MasterDocuments::where($where)->first();
+        return Response::json($doc);
     }
 
-    public function update(Request $request)
+    public function destroy($id)
     {
-        echo 5555;
+        $doc = MasterDocuments::where('eCode',$id)->delete();
+        return Response::json($doc);
     }
 }

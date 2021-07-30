@@ -24,12 +24,11 @@ Route::post('/home/save', 'App\Http\Controllers\HomeController@create')->name('h
 
 Route::resource('manage_users','App\Http\Controllers\ManageUsersController');
 Route::post('manage_users/{id}/edit/','App\Http\Controllers\ManageUsersController@edit');
+Route::resource('manage','App\Http\Controllers\ManageDocumentController');
+Route::post('manage/{id}/edit/','App\Http\Controllers\ManageDocumentController@edit');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('search');
-    Route::get('/manage', 'App\Http\Controllers\ManageDocumentController@index')->name('manage');
-    Route::post('/manage/postSave', 'App\Http\Controllers\ManageDocumentController@create')->name('manage.create');
-    Route::get('/manage/update', 'App\Http\Controllers\ManageDocumentController@update')->name('manage.update');
 });
 
 Route::group(['middleware' => 'auth'], function () {

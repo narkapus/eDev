@@ -24,7 +24,7 @@
         </a>
       </li>
       <li class="nav-item{{ $activePage == 'manage_documents' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('manage') }}">
+        <a class="nav-link" href="{{ route('manage.index') }}">
           <i class="material-icons">description</i>
             <p>{{ __('จัดการประเภทเอกสาร') }}</p>
         </a>
