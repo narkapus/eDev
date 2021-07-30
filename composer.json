@@ -30,7 +30,10 @@
             "Database\\Seeders\\": "database/seeders/",
             "LaravelFrontendPresets\\MaterialPreset\\": "presets/material/src"
 
-        }
+        },
+        "files": [
+            "app/Helpers/Helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

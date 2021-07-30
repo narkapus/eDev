@@ -1,4 +1,4 @@
-<div class="sidebar" data-color="orange" data-background-color="white" data-image="{{ asset('material') }}/img/sidebar-1.jpg">
+<div class="sidebar" data-color="green" data-background-color="white" data-image="{{ asset('material') }}/img/sidebar-1.jpg">
   <!--
       Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -27,6 +27,12 @@
         <a class="nav-link" href="{{ route('manage') }}">
           <i class="material-icons">description</i>
             <p>{{ __('จัดการประเภทเอกสาร') }}</p>
+        </a>
+      </li>
+      <li class="nav-item{{ $activePage == 'manage_users' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('manage_users.index') }}">
+          <i class="material-icons">manage_accounts</i>
+            <p>{{ __('จัดการผู้ใช้งาน') }}</p>
         </a>
       </li>
     </ul>
