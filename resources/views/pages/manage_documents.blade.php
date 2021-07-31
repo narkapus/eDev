@@ -98,7 +98,6 @@ document.docForm.btnsave.disabled=true
     </div>
 </body>
 <script type="text/javascript">
-
     $(document).ready(function () {
 
     var table = $('.data-table').DataTable({
@@ -106,12 +105,30 @@ document.docForm.btnsave.disabled=true
         serverSide: true,
         ajax: "{{ route('manage.index') }}",
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'eCode', name: 'eCode'},
-            {data: 'eName', name: 'eName'},
-            {data: 'created_at', name: 'created_at'},
-            {data: 'updated_at', name: 'updated_at'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+            { "data": "DT_RowIndex" },
+            { "data": "eCode" },
+            { "data": "eName" },
+            {
+                "data": "created_at",
+                "render": function (data) {
+                var datePart = data.match(/\d+/g),
+                    year = datePart[0], // get only two digits
+                    month = datePart[1],
+                    day = datePart[2];
+                    return day+'/'+month+'/'+year;
+                    }
+                },
+                {
+                "data": "updated_at",
+                "render": function (data) {
+                var datePart = data.match(/\d+/g),
+                    year = datePart[0], // get only two digits
+                    month = datePart[1],
+                    day = datePart[2];
+                    return day+'/'+month+'/'+year;
+                    }
+                },
+            { "data": "action" , orderable: false, searchable: false},
         ]
     });
     /* When click New Doc button */
