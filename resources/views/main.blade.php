@@ -44,10 +44,11 @@ $date = Carbon\Carbon::now();
                   <tr>
                     <td style="width:10%">ลำดับ</td>
                     <td style="width:25%">ประเภทเอกสาร</td>
-                    <td style="width:25%">เจ้าของเอกสาร</td>
                     <td style="width:15%">เอกสาร</td>
+                    <td style="width:15%">ผู้บันทึก</td>
                     <td style="width:10%">บันทึกวันที่</td>
                     <td style="width:10%">แก้ไขวันที่</td>
+                    <td style="width:10%">Action</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -66,7 +67,7 @@ $date = Carbon\Carbon::now();
         <div class="modal-content">
             <form  class="form-submit" id="addFormDoc" method="post"  action="{{ url('/home/save') }}" enctype="multipart/form-data">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มเอกสาร</h5>
+                    <h4 class="modal-title" id="docModal"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -113,6 +114,7 @@ var table = document.getElementById('addDocument');
 function addDocument(){
     $('#modalAddDocument').modal('show');
         $('#addFormDoc')[0].reset();
+        $('#docModal').html("เพิ่มเอกสาร");
         $('#action').val('Add');
 }
 $('#eFile').change(function() {
@@ -126,18 +128,13 @@ $(function () {
       serverSide: true,
         ajax: "{{ route('home') }}",
         columns: [
-            {data: 'eCode', name: 'eCode'},
-            {data: 'eName', name: 'eName'},
-            { "data": "eFile", "name": "eFile",
-                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                    // if(oData.client_name) {
-                    $(nTd).html("<a href='"+sData+"'>"+sData+"</a>");
-                    // }
-                }
-            },
+            {data: "DT_RowIndex" },
+            {data: 'mdName', name: 'mdName'},
+            {data: 'eFile', name: 'eFile'},
             {data: 'name', name: 'name'},
-            {data: 'created_at', name: 'created_at', orderable: true, searchable: true},
-            {data: 'created_at', name: 'created_at', orderable: true, searchable: true},
+            {data: 'created_at', name: 'created_at'},
+            {data: 'updated_at', name: 'updated_at'},
+            {data: 'action', name: 'action'},
         ]
   });
 

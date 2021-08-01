@@ -31,11 +31,11 @@ class HomeController extends Controller
     {
         $items = MasterDocuments::pluck('eName');
         $user = User::pluck('name');
-        $post = DB::select('select doc.eCode,md.eName,eFile,name,doc.created_at
+        $post = DB::select('select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at
                             from documents doc
                             join users on users.id = doc.userId
                             join master_documents as md on md.eCode = doc.eCode
-                            where date(doc.created_at) = CURDATE()');
+                            where date(doc.created_at) = CURDATE() AND doc.eStatus = 1');
         // DB::table('documents')->select('eCode','eName','name','documents.created_at')
         //     ->join('users','users.id','=','documents.userId')
         //     ->where('date(documents.created_at) = CURDATE()')
@@ -44,11 +44,19 @@ class HomeController extends Controller
         if($request->ajax()){
             return Datatables::of($post)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                        $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-                        return $btn;
+                ->addColumn('eFile', function($row){
+                    $eFile = '<a href='.$row->eFile.'>'.$row->eName.'</a>';
+                    return $eFile;
                 })
-                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $action = '
+                    <i class="material-icons"><a id="edit-doc" data-toggle="modal" data-id='.$row->id.'>edit</a></i>
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                    <i class="material-icons"><a id="delete-doc" data-id='.$row->id.'>delete</a></i>';
+                    return $action;
+                })
+                ->rawColumns(['eFile','action'])
                 ->make(true);
         }
         return view('main',compact('items','user','post'));
@@ -94,7 +102,7 @@ class HomeController extends Controller
         $mDocument = new Documents();
         // print_r($request->input('eCode'));exit;
         $mDocument->eCode = $request->input('eCode');
-        $mDocument->eName = 'NULL';
+        $mDocument->eName = $uploadedFile->getClientOriginalName();
         // $mDocument->eFile = $filename;
         $mDocument->eFile = '/storage/' . $filePath;
         $mDocument->userId = auth()->id();
