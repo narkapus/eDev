@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use DataTables;
+use Response;
+use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -35,7 +38,8 @@ class HomeController extends Controller
                             from documents doc
                             join users on users.id = doc.userId
                             join master_documents as md on md.eCode = doc.eCode
-                            where date(doc.created_at) = CURDATE() AND doc.eStatus = 1');
+                            where date(doc.created_at) = CURDATE() AND doc.eStatus = 1
+                            order by doc.created_at desc');
         // DB::table('documents')->select('eCode','eName','name','documents.created_at')
         //     ->join('users','users.id','=','documents.userId')
         //     ->where('date(documents.created_at) = CURDATE()')

@@ -15,10 +15,12 @@ class Documents extends Model
         'eName',
         'eFile',
         'userId',
-        'createDate',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
-        'createDate' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }
