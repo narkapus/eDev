@@ -20,6 +20,14 @@
     <script src="{{ asset('material') }}/js/plugins/pdfmake.min.js"></script>
     <script src="{{ asset('material') }}/js/plugins/vfs_fonts.js"></script>
     <script src="{{ asset('material') }}/js/plugins/buttons.html5.min.js"></script>
+    <style>
+        .custom-file-upload{
+            padding-top : 30px;clear: both;
+        }
+        .custom-file-upload-text{
+            background-color: transparent !important;clear: both;
+        }
+    </style>
 <?php
 $date = Carbon\Carbon::now();
 ?>
@@ -74,7 +82,7 @@ $date = Carbon\Carbon::now();
 <div class="modal fade" id="modalAddDocument" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form  class="form-submit" id="addFormDoc" method="post"  action="{{ url('/home/save') }}" enctype="multipart/form-data">
+            <form  class="form-submit" id="addFormDoc" method="post"  action="{{ route('home.store') }}" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h4 class="modal-title" id="docModal"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -86,7 +94,7 @@ $date = Carbon\Carbon::now();
                     <span id="form_output"></span>
                     <div class="form-group">
                         <label>ประเภทเอกสาร</label>
-                        <select class="form-control" name="eCode" id="eCode">
+                        <select class="form-control inputDoc" name="eCode" id="eCode">
                             @if(!empty($items))
                             <option value="" disabled selected>เลือกประเภทเอกสาร</option>
                             @foreach ($items as $key => $value)
@@ -100,53 +108,128 @@ $date = Carbon\Carbon::now();
                     <div class="form-group">
                         <label>ประเภทเอกสาร</label>
                         <div class="col-md-6">
+                            <input class="form-control" id="actionDoc" name='actionDoc' type="text" hidden>
+                            <input class="form-control" id="idDoc" name='idDoc' type="text" hidden>
                         </div>
-                        <div class="col-md-4">
-                            <input class="form-control" id="filename" name='filename' type="text" readOnly>
-                            <label for="eFile" class="custom-file-upload">
+                        <div class="col-md-8">
+                            <label for="eName" class="custom-file-upload">
                                 <i class="fa fa-cloud-upload"></i> Upload file
+                                <input id="eName" name='eName' class="file inputDoc" type="file" style="display: none;" multiple data-preview-file-type="any" data-upload-url="#">
+                                <input class="form-control custom-file-upload-text" id="filename" name='filename' type="text" readOnly>
                             </label>
-                            <input id="eFile" name='eFile' class="file" type="file" style="display:none;" multiple data-preview-file-type="any" data-upload-url="#">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="submit" id="actionSave" name="btnsave" class="btn btn-primary actionSave"></button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="action" value="Add" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-var table = document.getElementById('addDocument');
-function addDocument(){
-    $('#modalAddDocument').modal('show');
-        $('#addFormDoc')[0].reset();
-        $('#docModal').html("เพิ่มเอกสาร");
-        $('#action').val('Add');
-}
-$('#eFile').change(function() {
-  var i = $(this).prev('label').clone();
-  var file = $('#eFile')[0].files[0].name;
-  $("#filename").val(file);
-});
-$(function () {
-  var table = $('#dataTable').DataTable({
-      processing: true,
-      serverSide: true,
+$(document).ready(function () {
+    var table = $('#dataTable').DataTable({
+        processing: true,
+        serverSide: true,
         ajax: "{{ route('home') }}",
         columns: [
             {data: "DT_RowIndex" },
             {data: 'mdName', name: 'mdName'},
             {data: 'eFile', name: 'eFile'},
             {data: 'name', name: 'name'},
-            {data: 'created_at', name: 'created_at'},
-            {data: 'updated_at', name: 'updated_at'},
+            {data: 'created_at', name: 'created_at',
+                "render": function (data) {
+                    var datePart = data.match(/\d+/g),
+                        year = datePart[0], // get only two digits
+                        month = datePart[1],
+                        day = datePart[2];
+                    var time = data.split(" ");
+                    return day+'/'+month+'/'+year+' '+time[1];
+                }
+            },
+            {data: 'updated_at', name: 'updated_at',
+                "render": function (data) {
+                    var datePart = data.match(/\d+/g),
+                        year = datePart[0], // get only two digits
+                        month = datePart[1],
+                        day = datePart[2];
+                    var time = data.split(" ");
+                    return day+'/'+month+'/'+year+' '+time[1];
+                }
+            },
             {data: 'action', name: 'action'},
-        ]
-  });
+        ],
+    });
+    $("#actionSave").attr("disabled", true);
+    $('#eName').change(function() {
+        var i = $(this).prev('label').clone();
+        var file = $('#eName')[0].files[0].name;
+        $("#filename").val(file);
+    });
 
+    /* action save/update data */
+    $('.inputDoc').on('change',function() {
+        var docCode = $('#eCode').val();
+        var file = $('#eName').val();
+        var bt_action = $('#actionDoc').val();
+        if((docCode !='' && file !='' && bt_action == 'save') || bt_action == 'update')
+            $("#actionSave").removeAttr("disabled");
+        else
+            $("#actionSave").attr("disabled", true);
+    });
+
+    
+    /* Edit Doc */
+    $('body').on('click', '#edit-file', function () {
+    var doc_id = $(this).data("id");
+    $.get("/home/" +doc_id+ "/edit", function (data) {
+        console.log(data.eCode);
+        $('#addFormDoc')[0].reset();
+        $('#docModal').html("แก้ไขเอกสาร");
+        $('#modalAddDocument').modal('show');
+        $('#actionSave').text("Update");
+        $('#actionDoc').val('update');
+        $('#idDoc').val(doc_id);
+        $('#eCode').val(data.eCode);
+        $("#filename").val(data.eName);
+        $("#eName").text(data.eFile);
+        })
+    });
+
+    /* Delete Doc */
+    $('body').on('click', '#delete-file', function () {
+        var doc_id = $(this).data("id");
+        $('#idDoc').val(doc_id);
+        var token = $("meta[name='csrf-token']").attr("content");
+        if(confirm("ยืนยันลบข้อมูล!")) {
+            $.ajax({
+                type: "DELETE",
+            url: "../home/delete/"+doc_id,
+            data: {
+                "id": doc_id,
+                "_token": token,
+            },
+            success: function (data) {
+                table.ajax.reload();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+            });
+        }
+        else{
+            return false;
+        };
+    });
 });
+function addDocument(){
+    $('#modalAddDocument').modal('show');
+    $('#addFormDoc')[0].reset();
+    $('#docModal').html("เพิ่มเอกสาร");
+    $('#actionSave').text('Save');
+    $('#actionDoc').val('save');
+}
 </script>
 @endsection

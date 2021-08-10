@@ -49,15 +49,14 @@ class HomeController extends Controller
             return Datatables::of($post)
                 ->addIndexColumn()
                 ->addColumn('eFile', function($row){
-                    $eFile = '<a href='.$row->eFile.'>'.$row->eName.'</a>';
+                    $eFile = '<a href="home/preview/'.$row->id.'" >'.$row->eName.'</a>';
                     return $eFile;
                 })
-                ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $action = '
-                    <i class="material-icons"><a id="edit-doc" data-toggle="modal" data-id='.$row->id.'>edit</a></i>
+                    <i class="material-icons"><a id="edit-file" data-toggle="modal" data-id='.$row->id.'>edit</a></i>
                     <meta name="csrf-token" content="{{ csrf_token() }}">
-                    <i class="material-icons"><a id="delete-doc" data-id='.$row->id.'>delete</a></i>';
+                    <i class="material-icons"><a id="delete-file" data-id='.$row->id.'>delete</a></i>';
                     return $action;
                 })
                 ->rawColumns(['eFile','action'])
@@ -72,37 +71,6 @@ class HomeController extends Controller
         $uploadedFile = $request->file('eFile');
         $fileName = time()."/".$uploadedFile->getClientOriginalName();
         $filePath = $request->file('eFile')->storeAs('uploads', $fileName, 'public');
-        // Storage::disk('local')->putFileAs(
-        //     'files/'.$filename,
-        //     $uploadedFile,
-        //     $filename
-        // );
-
-        // $request->validate([
-        //     'file' => 'required|mimes:pdf|max:2048'
-        // ]);
-
-        // $mDocument = new Documents;
-
-        // if($request->file('eFile')) {
-        //     $fileName = time().'_'.$request->file->getClientOriginalName();
-        //     $filePath = $request->file('eFile')->storeAs('uploads', $fileName, 'public');
-        //     print_r($request->file->getClientOriginalName());exit;
-        //     $mDocument->eCode = $request->input('eCode');
-        //     $mDocument->eName = time().'_'.$request->file->getClientOriginalName();
-        //     $mDocument->eFile = '/storage/' . $filePath;
-        //     $mDocument->userId = auth()->id();
-        //     $mDocument->save();
-
-        //     // return back()
-        //     // ->with('success','File has been uploaded.')
-        //     // ->with('file', $fileName);
-        //     return redirect()->route("search")->with('message','Success');
-        // }else{
-        //     print_r("error");exit;
-        //     return redirect()->route("search")->with('message','Error');
-        // }
-
         $mDocument = new Documents();
         // print_r($request->input('eCode'));exit;
         $mDocument->eCode = $request->input('eCode');
@@ -112,5 +80,88 @@ class HomeController extends Controller
         $mDocument->userId = auth()->id();
         $mDocument->save();
         return redirect()->route("home")->with('message','Success');
+    }
+    public function store(Request $request)
+    {
+        $rule = [
+            'eCode' => 'required',
+            'filename' => 'required',
+        ];
+        $message = [
+            'eCode.required' => 'Please enter eCode.',
+            'filename.required' => 'Please select eFile.',
+        ];
+        try {
+            $validator = Validator::make($request->all(), $rule, $message);
+            if ($validator->fails()) {
+                print_r($validator->errors()->first());die;
+                return responseJson(400, $validator->errors()->first());
+            }
+            if($request->input('actionDoc') == 'save'){
+                $uId = $request->eCode;
+                $uploadedFile = $request->file('eName');
+                $fileName = time()."/".$uploadedFile->getClientOriginalName();
+                $filePath = $request->file('eName')->storeAs('uploads', $fileName, 'public');
+                $mDocument = new Documents();
+                $mDocument->eCode = $request->input('eCode');
+                $mDocument->eName = $uploadedFile->getClientOriginalName();
+                $mDocument->eFile = 'app/public/' . $filePath;
+                $mDocument->userId = auth()->id();
+                $mDocument->save();
+            }elseif($request->input('actionDoc') == 'update') {
+                $where = array('id' => $request->idDoc);
+                $mDocument = Documents::where($where)->first();
+                // print_r($mDocument->eName);die;
+                $mDocument->eCode = $request->input('eCode');
+                if($request->filename != $mDocument->eName){
+                    $uploadedFile = $request->file('eName');
+                    $fileName = time()."/".$uploadedFile->getClientOriginalName();
+                    $filePath = $request->file('eName')->storeAs('uploads', $fileName, 'public');
+                    $mDocument->eName = $uploadedFile->getClientOriginalName();
+                    $mDocument->eFile = 'app/public/' . $filePath;
+                }
+                $mDocument->userId = auth()->id();
+                $mDocument->save();
+            }elseif($request->input('actionDoc') == 'delete'){
+                $where = array('id' => $request->idDoc);
+                $mDocument->userId = auth()->id();
+                $mDocument->eStatus = 0;
+                $mDocument->save();
+            }
+            if(empty($request->id))
+                $msg = 'created successfully.';
+            else
+                $msg = 'Data is updated successfully';
+            return redirect()->route('home')->with('success',$msg);
+
+        }   catch (Exception $ex) {
+            // print_r($ex->getMessage());die;
+            return abort(500, $ex->getMessage());
+        }
+    }
+
+    public function edit($id)
+    {
+        $where = array('id' => $id);
+        $doc = Documents::where($where)->first();
+        return Response::json($doc);
+    }
+
+    public function destroy($id)
+    {
+        $doc = Documents::where('id',$id)->delete();
+        return Response::json($doc);
+    }
+
+    public function preview(Request $request){
+        $where = array('id' => $request->id);
+        $doc = Documents::where($where)->first();
+        $path = storage_path(str_replace("/","\\",$doc->eFile));
+        $filename = $doc->eName;
+
+        return Response::make(file_get_contents($path), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        ]) ;
     }
 }

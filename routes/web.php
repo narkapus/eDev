@@ -19,8 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('', 'App\Http\Controllers\HomeController@index')->middleware('auth');
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
-Route::post('/home/save', 'App\Http\Controllers\HomeController@create')->name('home.create');
+Route::get('home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
+Route::post('home/store', 'App\Http\Controllers\HomeController@store')->name('home.store');
+Route::get('home/{id}/edit/','App\Http\Controllers\HomeController@edit');
+Route::get('home/preview/{id}/', 'App\Http\Controllers\HomeController@preview');
 
 Route::resource('manage_users','App\Http\Controllers\ManageUsersController');
 Route::post('manage_users/{id}/edit/','App\Http\Controllers\ManageUsersController@edit');
