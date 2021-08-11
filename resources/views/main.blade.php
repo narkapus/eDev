@@ -94,16 +94,7 @@ $date = Carbon\Carbon::now();
                     <span id="form_output"></span>
                     <div class="form-group">
                         <label>ประเภทเอกสาร</label>
-                        <select class="form-control inputDoc" name="eCode" id="eCode">
-                            @if(!empty($items))
-                            <option value="" disabled selected>เลือกประเภทเอกสาร</option>
-                            @foreach ($items as $key => $value)
-                                <option value="{{ $key+1 }}" {{ ( $key+1 ) ? 'เลือกข้อมูล' : '' }}>
-                                    {{ $value }}
-                                </option>
-                            @endforeach
-                            @endif
-                        </select>
+                        {!! Form::select('eCode', $items, null, ['class' => 'form-control inputDoc', "id"=>"eCode",'placeholder' => 'เลือกประเภทเอกสาร']) !!}
                     </div>
                     <div class="form-group">
                         <label>ประเภทเอกสาร</label>

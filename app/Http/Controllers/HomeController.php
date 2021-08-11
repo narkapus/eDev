@@ -32,7 +32,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $items = MasterDocuments::pluck('eName');
+        $items = MasterDocuments::pluck('eName','id');
         $user = User::pluck('name');
         $post = DB::select('select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at
                             from documents doc

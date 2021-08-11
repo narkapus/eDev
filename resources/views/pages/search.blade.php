@@ -1,26 +1,26 @@
 @extends('layouts.app', ['activePage' => 'search', 'titlePage' => __('ค้นหาเอกสาร')])
 
 @section('content')
+    <link href="{{ asset('material') }}/css/dataTables/buttons.dataTables.min.css" rel="stylesheet">
+    <link href="{{ asset('material') }}/css/dataTables/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="{{ asset('material') }}/js/core/jquery-3.5.1.js"></script>
+    <script src="{{ asset('material') }}/js/plugins/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('material') }}/js/plugins/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('material') }}/js/plugins/jszip.min.js"></script>
+    <script src="{{ asset('material') }}/js/plugins/pdfmake.min.js"></script>
+    <script src="{{ asset('material') }}/js/plugins/vfs_fonts.js"></script>
+    <script src="{{ asset('material') }}/js/plugins/buttons.html5.min.js"></script>
 <div class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <form class="form-submit" method="GET"  action="{{ url('/search') }}">
+            {{ Form::open(array('url' => '/search', 'method' => 'get')) }}
                 <div class="row">
                     <div class="col-md-6">
                         <label>ประเภทเอกสาร</label>
-                        <select class="form-control" name="search">
-                            @if(!empty($items))
-                            <option value="" disabled selected>เลือกประเภทเอกสาร</option>
-                            @foreach ($items as $key => $value)
-                                <option value="{{ $key+1 }}" {{ ( $key+1 ) ? 'เลือกข้อมูล' : '' }}>
-                                    {{ $value }}
-                                </option>
-                            @endforeach
-                            @endif
-                        </select>
+                        {!! Form::select('search', $items, null, ['class' => 'form-control','placeholder' => 'ประเภทเอกสารทั้งหมด']) !!}
                     </div>
                 </div>
                 <div class="row" style="margin-top: 1%">
@@ -38,9 +38,9 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            {{ Form::close() }}
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-condensed" style="text-align: center;">
+                <table id="dataTable-search" class="table table-striped table-hover table-condensed" style="text-align: center;width:100%">
                     <tbody>
                         <thead>
                             <tr>
@@ -50,14 +50,9 @@
                                 <th>วันที่อัพโหลด</th>
                             </tr>
                         </thead>
-                        @foreach ($post as $item)
-                            <tr>
-                                <td>{{ $item->eCode }}</td>
-                                <td>{{ $item->eName }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ date("d/m/Y H:m:s", strtotime($item->created_at)); }}</td>
-                            </tr>
-                        @endforeach
+                        <tbody>
+
+                        </tbody>
                     </tbody>
                 </table>
             </div>
@@ -68,5 +63,27 @@
   </div>
 </div>
 <script type="text/javascript">
+$(document).ready(function () {
+    var table = $('#dataTable-search').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('search') }}",
+        columns: [
+            {data: "DT_RowIndex" },
+            {data: 'mdName', name: 'mdName'},
+            {data: 'eFile', name: 'eFile'},
+            {data: 'created_at', name: 'created_at',
+                "render": function (data) {
+                    var datePart = data.match(/\d+/g),
+                        year = datePart[0], // get only two digits
+                        month = datePart[1],
+                        day = datePart[2];
+                    var time = data.split(" ");
+                    return day+'/'+month+'/'+year+' '+time[1];
+                }
+            },
+        ],
+    });
+});
 </script>
 @endsection
