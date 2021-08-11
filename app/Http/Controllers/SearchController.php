@@ -48,7 +48,7 @@ class SearchController extends Controller
             $conditons .= " and doc.eCode = ".$code;
         }
         if($userId){
-            $conditons .= " and users.userId = ".$userId;
+            $conditons .= " and users.Id = ".$userId;
         }
         if($fullName){
             $conditons .= " and name like '%".$fullName."%'";
@@ -60,7 +60,7 @@ class SearchController extends Controller
                             join master_documents as md on md.id = doc.eCode
                             where doc.eStatus = 1 $conditons
                             order by doc.created_at desc");
-        
+
         // print_r($post);die;
         if($request->ajax()){
             return Datatables::of($post)
