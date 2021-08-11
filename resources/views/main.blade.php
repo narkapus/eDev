@@ -114,7 +114,7 @@ $date = Carbon\Carbon::now();
                         <div class="col-md-8">
                             <label for="eName" class="custom-file-upload">
                                 <i class="fa fa-cloud-upload"></i> Upload file
-                                <input id="eName" name='eName' class="file inputDoc" type="file" style="display: none;" multiple data-preview-file-type="any" data-upload-url="#">
+                                <input id="eName" name='eName' class="file inputDoc" type="file" style="display: none;" multiple data-preview-file-type="any" data-upload-url="#" accept="application/pdf , image/gif, image/jpeg, image/jpg, image/png, image/bmp">
                                 <input class="form-control custom-file-upload-text" id="filename" name='filename' type="text" readOnly>
                             </label>
                         </div>

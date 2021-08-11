@@ -37,7 +37,7 @@ class HomeController extends Controller
         $post = DB::select('select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at
                             from documents doc
                             join users on users.id = doc.userId
-                            join master_documents as md on md.eCode = doc.eCode
+                            join master_documents as md on md.id = doc.eCode
                             where date(doc.created_at) = CURDATE() AND doc.eStatus = 1
                             order by doc.created_at desc');
         // DB::table('documents')->select('eCode','eName','name','documents.created_at')
@@ -49,7 +49,7 @@ class HomeController extends Controller
             return Datatables::of($post)
                 ->addIndexColumn()
                 ->addColumn('eFile', function($row){
-                    $eFile = '<a href="home/preview/'.$row->id.'" >'.$row->eName.'</a>';
+                    $eFile = '<a href="home/preview/'.$row->id.'"  target="_blank">'.$row->eName.'</a>';
                     return $eFile;
                 })
                 ->addColumn('action', function($row){
@@ -100,7 +100,7 @@ class HomeController extends Controller
             if($request->input('actionDoc') == 'save'){
                 $uId = $request->eCode;
                 $uploadedFile = $request->file('eName');
-                $fileName = time()."/".$uploadedFile->getClientOriginalName();
+                $fileName = $uId."/".$uploadedFile->getClientOriginalName();
                 $filePath = $request->file('eName')->storeAs('uploads', $fileName, 'public');
                 $mDocument = new Documents();
                 $mDocument->eCode = $request->input('eCode');
@@ -115,7 +115,7 @@ class HomeController extends Controller
                 $mDocument->eCode = $request->input('eCode');
                 if($request->filename != $mDocument->eName){
                     $uploadedFile = $request->file('eName');
-                    $fileName = time()."/".$uploadedFile->getClientOriginalName();
+                    $fileName = $uId."/".$uploadedFile->getClientOriginalName();
                     $filePath = $request->file('eName')->storeAs('uploads', $fileName, 'public');
                     $mDocument->eName = $uploadedFile->getClientOriginalName();
                     $mDocument->eFile = 'app/public/' . $filePath;
@@ -158,9 +158,14 @@ class HomeController extends Controller
         $doc = Documents::where($where)->first();
         $path = storage_path(str_replace("/","\\",$doc->eFile));
         $filename = $doc->eName;
-
+        $extensionFile = explode('.',strtolower($filename));
+        $extensionFile = $extensionFile[1];
+        if($extensionFile == 'pdf')
+            $contentType = 'application';
+        else
+            $contentType = 'image';
         return Response::make(file_get_contents($path), 200, [
-            'Content-Type' => 'application/pdf',
+            'Content-Type' => $contentType.'/'.$extensionFile,
             'Content-Disposition' => 'inline; filename="'.$filename.'"'
         ]) ;
     }
