@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label>ประเภทเอกสาร</label>
-                        {!! Form::select('search', $items, null, ['class' => 'form-control','placeholder' => 'ประเภทเอกสารทั้งหมด']) !!}
+                        {!! Form::select('docCode', $items, null, ['class' => 'form-control','placeholder' => 'ประเภทเอกสารทั้งหมด', 'id'=>'docCode']) !!}
                     </div>
                 </div>
                 <div class="row" style="margin-top: 1%">
@@ -45,6 +45,7 @@
                         <thead>
                             <tr>
                                 <th>รหัสเอกสาร</th>
+                                <th>ประเภทเอกสาร</th>
                                 <th>ชื่อเอกสาร</th>
                                 <th>ผู้อัพโหลด</th>
                                 <th>วันที่อัพโหลด</th>
@@ -67,11 +68,11 @@ $(document).ready(function () {
     var table = $('#dataTable-search').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('search') }}",
         columns: [
             {data: "DT_RowIndex" },
             {data: 'mdName', name: 'mdName'},
             {data: 'eFile', name: 'eFile'},
+            {data: 'name', name: 'name'},
             {data: 'created_at', name: 'created_at',
                 "render": function (data) {
                     var datePart = data.match(/\d+/g),

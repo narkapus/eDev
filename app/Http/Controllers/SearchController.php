@@ -32,7 +32,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $code = $request->input('docCode');
         $userId = $request->input('userId');
         $fullName = $request->input('fullName');
         $conditons = "";
@@ -44,9 +44,9 @@ class SearchController extends Controller
         //         ->join('users','users.id','=','documents.userId')
         //         ->join('master_documents as md','md.id','=','documents.eCode')
         //         ->orderBy('documents.created_at','desc');
-        // if($search){
-        //     $conditons .= " and doc.eCode = ".$search;
-        // }
+        if($code){
+            $conditons .= " and doc.eCode = ".$code;
+        }
         if($userId){
             $conditons .= " and users.userId = ".$userId;
         }
