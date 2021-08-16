@@ -49,6 +49,7 @@
                                 <th>ชื่อเอกสาร</th>
                                 <th>ผู้อัพโหลด</th>
                                 <th>วันที่อัพโหลด</th>
+                                <th>ดาวน์โหลด</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,6 +65,7 @@
   </div>
 </div>
 <script type="text/javascript">
+var role = "{{ Auth::user()->role }} ";
 $(document).ready(function () {
     var table = $('#dataTable-search').DataTable({
         processing: true,
@@ -71,7 +73,7 @@ $(document).ready(function () {
         columns: [
             {data: "DT_RowIndex" },
             {data: 'mdName', name: 'mdName'},
-            {data: 'eFile', name: 'eFile'},
+            {data: 'download', name: 'download'},
             {data: 'name', name: 'name'},
             {data: 'created_at', name: 'created_at',
                 "render": function (data) {
@@ -81,6 +83,15 @@ $(document).ready(function () {
                         day = datePart[2];
                     var time = data.split(" ");
                     return day+'/'+month+'/'+year+' '+time[1];
+                }
+            },
+            {data: 'eFile', name: 'eFile',
+                "render": function (data) {
+                    if(role == 1) {
+                        return data;
+                    } else {
+                        return 'ไม่มีสิทธ์ดาวน์โหลด';
+                    }
                 }
             },
         ],
