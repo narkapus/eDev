@@ -27,6 +27,15 @@ document.docForm.btnsave.disabled=true
 }
 </script>
 </head>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <body>
     <div class="content">
         <div class="container-fluid">
@@ -78,13 +87,13 @@ document.docForm.btnsave.disabled=true
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>รหัสเอกสาร:</strong>
-                                    <input type="text" name="eCode" id="eCode" class="form-control" placeholder="รหัสเอกสาร" value="">
+                                    <input type="text" name="eCode" id="eCode" class="form-control" placeholder="รหัสเอกสาร" value="" required>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>ประเภทเอกสาร:</strong>
-                                    <input type="text" name="eName" id="eName" class="form-control" placeholder="ประเภทเอกสาร">
+                                    <input type="text" name="eName" id="eName" class="form-control" placeholder="ประเภทเอกสาร" required>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

@@ -38,8 +38,11 @@ class ManageDocumentController extends Controller
         ];
         try {
             $validator = Validator::make($request->all(), $rule, $message);
-            if ($validator->fails()) {
+
+            if ($validator->fails())
+            {
                 return responseJson(400, $validator->errors()->first());
+                //return response()->json(['errors'=>$validator->errors()->all()]);
             }
                 $uId = $request->eCode;
                 MasterDocuments::updateOrCreate(['eCode' => $uId],['eName' =>$request->eName]);

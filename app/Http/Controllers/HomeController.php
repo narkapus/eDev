@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-// use Storage;
 use App\Models\MasterDocuments;
 use App\Models\Documents;
 use App\Models\User;
@@ -38,13 +37,8 @@ class HomeController extends Controller
                             from documents doc
                             join users on users.id = doc.userId
                             join master_documents as md on md.id = doc.eCode
-                            where date(doc.created_at) = CURDATE() AND doc.eStatus = 1
+                            where  doc.eStatus = 1
                             order by doc.created_at desc');
-        // DB::table('documents')->select('eCode','eName','name','documents.created_at')
-        //     ->join('users','users.id','=','documents.userId')
-        //     ->where('date(documents.created_at) = CURDATE()')
-        //     ->orderBy('documents.created_at','desc')
-        //     ->get();
         if($request->ajax()){
             return Datatables::of($post)
                 ->addIndexColumn()
@@ -135,7 +129,6 @@ class HomeController extends Controller
             return redirect()->route('home')->with('success',$msg);
 
         }   catch (Exception $ex) {
-            // print_r($ex->getMessage());die;
             return abort(500, $ex->getMessage());
         }
     }

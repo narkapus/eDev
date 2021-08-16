@@ -78,20 +78,19 @@ document.userForm.btnsave.disabled=true
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <strong>ชื่อ-นามสกุล:</strong>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Name" onchange="validate()" >
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Name" onchange="validate()" required>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <strong>Password:</strong>
-                                <input type="text" name="password" id="password" class="form-control" placeholder="password" onchange="validate()" >
+                                <input type="text" name="password" id="password" class="form-control" placeholder="password" onchange="validate()" required>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <strong>สิทธ์การใช้งาน:</strong>
-                                {{-- <input type="text" name="role" id="role" class="form-control" placeholder="role" onchange="validate()" > --}}
-                                <select class="form-control" name="role" id="role">
+                                <select class="form-control" name="role" id="role" required>
                                     <option value='' disabled selected>กรุณาเลือก</option>
                                     <option value='0'>ผู้ใช้งานทั่วไป</option>
                                     <option value='1'>ผู้ดูแลระบบ</option>
@@ -101,7 +100,7 @@ document.userForm.btnsave.disabled=true
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <div class="form-group">
                                 <strong>Email:</strong>
-                                <input type="text" name="email" id="email" class="form-control" placeholder="Email" onchange="validate()">
+                                <input type="text" name="email" id="email" class="form-control" placeholder="Email" onchange="validate()" required>
                             </div>
                         </div>
 
