@@ -51,11 +51,12 @@ $date = Carbon\Carbon::now();
                 <thead>
                   <tr>
                         <td style="width:10%">ลำดับ</td>
-                        <td style="width:25%">ประเภทเอกสาร</td>
+                        <td style="width:30%">ประเภทเอกสาร</td>
                         <td style="width:15%">เอกสาร</td>
                         <td style="width:15%">ผู้บันทึก</td>
                         <td style="width:10%">บันทึกวันที่</td>
                         <td style="width:10%">แก้ไขวันที่</td>
+                        <td style="width:7%">ดาวน์โหลด</td>
                         {{-- <td style="width:10%">Action</td> --}}
                   </tr>
                 </thead>
@@ -108,6 +109,7 @@ $date = Carbon\Carbon::now();
     </div>
 </div>
 <script type="text/javascript">
+var role = "{{ Auth::user()->role }} ";
 $(document).ready(function () {
     var table = $('#dataTable').DataTable({
         processing: true,
@@ -116,7 +118,7 @@ $(document).ready(function () {
         columns: [
             {data: "DT_RowIndex" },
             {data: 'mdName', name: 'mdName'},
-            {data: 'eFile', name: 'eFile'},
+            {data: 'download', name: 'download'},
             {data: 'name', name: 'name'},
             {data: 'created_at', name: 'created_at',
                 "render": function (data) {
@@ -136,6 +138,15 @@ $(document).ready(function () {
                         day = datePart[2];
                     var time = data.split(" ");
                     return day+'/'+month+'/'+year+' '+time[1];
+                }
+            },
+            {data: 'eFile', name: 'eFile',
+                "render": function (data) {
+                    if(role == 1) {
+                        return data;
+                    } else {
+                        return 'ไม่มีสิทธ์ดาวน์โหลด';
+                    }
                 }
             },
             // {data: 'action', name: 'action'},

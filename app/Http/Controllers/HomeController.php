@@ -43,7 +43,7 @@ class HomeController extends Controller
             return Datatables::of($post)
                 ->addIndexColumn()
                 ->addColumn('eFile', function($row){
-                    $eFile = '<a href="home/preview/'.$row->id.'"  target="_blank">'.$row->eName.'</a>';
+                    $eFile = '<a href="home/preview/'.$row->id.'"  target="_blank"><i class="material-icons" style="color: gray;">'.'download'.'</i></a>';
                     return $eFile;
                 })
                 ->addColumn('action', function($row){
@@ -52,6 +52,10 @@ class HomeController extends Controller
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     <i class="material-icons"><a id="delete-file" data-id='.$row->id.'>delete</a></i>';
                     return $action;
+                })
+                ->addColumn('download', function($row){
+                    $showName = $row->eName;
+                    return $showName;
                 })
                 ->rawColumns(['eFile','action'])
                 ->make(true);
