@@ -33,12 +33,12 @@ class HomeController extends Controller
     {
         $items = MasterDocuments::pluck('eName','id');
         $user = User::pluck('name');
-        $post = DB::select('select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at
+        $post = DB::select("select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at
                             from documents doc
                             join users on users.id = doc.userId
                             join master_documents as md on md.id = doc.eCode
-                            where  doc.eStatus = 1
-                            order by doc.created_at desc');
+                            where  doc.eStatus = 1 and userId = ".auth()->id()."
+                            order by doc.created_at desc");
         if($request->ajax()){
             return Datatables::of($post)
                 ->addIndexColumn()
