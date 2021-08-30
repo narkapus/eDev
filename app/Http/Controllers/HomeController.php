@@ -11,6 +11,7 @@ use DataTables;
 use Response;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use Image;
 
 class HomeController extends Controller
 {
@@ -70,10 +71,8 @@ class HomeController extends Controller
         $fileName = time()."/".$uploadedFile->getClientOriginalName();
         $filePath = $request->file('eFile')->storeAs('uploads', $fileName, 'public');
         $mDocument = new Documents();
-        // print_r($request->input('eCode'));exit;
         $mDocument->eCode = $request->input('eCode');
         $mDocument->eName = $uploadedFile->getClientOriginalName();
-        // $mDocument->eFile = $filename;
         $mDocument->eFile = '/storage/' . $filePath;
         $mDocument->userId = auth()->id();
         $mDocument->save();
@@ -83,11 +82,11 @@ class HomeController extends Controller
     {
         $rule = [
             'eCode' => 'required',
-            'filename' => 'required',
+            'eName' => 'required',
         ];
         $message = [
             'eCode.required' => 'Please enter eCode.',
-            'filename.required' => 'Please select eFile.',
+            'eName.required' => 'Please select eFile.',
         ];
         try {
             $validator = Validator::make($request->all(), $rule, $message);

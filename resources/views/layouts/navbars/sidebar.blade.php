@@ -29,12 +29,14 @@
             <p>{{ __('จัดการประเภทเอกสาร') }}</p>
         </a>
       </li>
+      @if(Auth::user()->role == 1)
       <li class="nav-item{{ $activePage == 'manage_users' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('manage_users.index') }}">
           <i class="material-icons">manage_accounts</i>
             <p>{{ __('จัดการผู้ใช้งาน') }}</p>
         </a>
       </li>
+      @endif
     </ul>
   </div>
 </div>
