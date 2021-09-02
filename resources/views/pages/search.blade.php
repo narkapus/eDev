@@ -33,7 +33,7 @@
                 </div>
                 <div class="row" style="margin-top: 1%">
                     <div class="col-md-2">
-                        <label class="label-control">วันที่อัพโหลด</label>
+                        <label class="label-control">วันที่อัพโหลด (เดือน/วัน/ปี)</label>
                     </div>
                     <div class="col-md-2">
                         <input type="date"  name="date_from" data-date="" id="date_from" class="form-control"/>
