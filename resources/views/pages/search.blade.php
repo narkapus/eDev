@@ -30,6 +30,20 @@
                     <div class="col-md-4">
                         <input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"  name="fullName">
                     </div>
+                </div>
+                <div class="row" style="margin-top: 1%">
+                    <div class="col-md-2">
+                        <label class="label-control">วันที่อัพโหลด</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date"  name="date_from" data-date="" id="date_from" class="form-control"/>
+                    </div>
+                    <div>
+                        <label class="label-control">ถึง</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date"  name="date_to" data-date="" id="date_to" class="form-control"/>
+                    </div>
                     <div class="row">
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-default">

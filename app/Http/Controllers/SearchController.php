@@ -35,7 +35,8 @@ class SearchController extends Controller
         $code = $request->input('docCode');
         $userId = $request->input('userId');
         $fullName = $request->input('fullName');
-        $createAt = $request->input('createAt');
+        $date_from = $request->input('date_from');
+        $date_to = $request->input('date_to');
         $conditons = "";
 
         $items = MasterDocuments::pluck('eName','id');
@@ -54,8 +55,10 @@ class SearchController extends Controller
         if($fullName){
             $conditons .= " and name like '%".$fullName."%'";
         }
-        if($createAt){
-            $conditons .= " and doc.created_at like '%".$createAt."%'";
+        if($date_from && $date_to){
+            $conditons .= " and date(doc.created_at) between '".$date_from."' and '".$date_to."'";
+        }else if ($date_from){
+            $conditons .= " and date(doc.created_at) = '".$date_from."'";
         }
         // $post = $post->get();
         $post = DB::select("select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at
