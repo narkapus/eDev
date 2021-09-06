@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\MasterDocuments;
 use App\Models\Documents;
 use App\Models\User;
+use App\Models\Members;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -74,6 +75,7 @@ class HomeController extends Controller
         $mDocument->eCode = $request->input('eCode');
         $mDocument->eName = $uploadedFile->getClientOriginalName();
         $mDocument->eFile = '/storage/' . $filePath;
+        $mDocument->eMember = $request->input('eMember');
         $mDocument->userId = auth()->id();
         $mDocument->save();
         return redirect()->route("home")->with('message','Success');
@@ -103,6 +105,7 @@ class HomeController extends Controller
                 $mDocument->eCode = $request->input('eCode');
                 $mDocument->eName = $uploadedFile->getClientOriginalName();
                 $mDocument->eFile = 'app/public/' . $filePath;
+                $mDocument->eMember = $request->input('eMember');
                 $mDocument->userId = auth()->id();
                 $mDocument->save();
             }elseif($request->input('actionDoc') == 'update') {
@@ -116,6 +119,7 @@ class HomeController extends Controller
                     $filePath = $request->file('eName')->storeAs('uploads', $fileName, 'public');
                     $mDocument->eName = $uploadedFile->getClientOriginalName();
                     $mDocument->eFile = 'app/public/' . $filePath;
+                    $mDocument->eMember = $request->input('eMember');
                 }
                 $mDocument->userId = auth()->id();
                 $mDocument->save();
@@ -165,4 +169,15 @@ class HomeController extends Controller
             'Content-Disposition' => 'inline; filename="'.$filename.'"'
         ]) ;
     }
+    
+    public function autocompleteSearch(Request $request)
+    {
+        $query = $request->get('query');
+        $filterResult = Members::select('mb_no')->where('mb_no', 'LIKE', ''. $query. '%')->take(10)->get();
+        $data = array();
+        foreach ($filterResult as $result){
+            $data[] = $result->mb_no;
+        }
+        return response()->json($data);
+    } 
 }

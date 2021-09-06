@@ -11,12 +11,23 @@
     <script src="{{ asset('material') }}/js/plugins/pdfmake.min.js"></script>
     <script src="{{ asset('material') }}/js/plugins/vfs_fonts.js"></script>
     <script src="{{ asset('material') }}/js/plugins/buttons.html5.min.js"></script>
+    <script src="{{ asset('material') }}/js/plugins/bootstrap3-typeahead.js"></script>
+
     <style>
         .custom-file-upload{
             padding-top : 30px;clear: both;
         }
         .custom-file-upload-text{
             background-color: transparent !important;clear: both;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .txtLabel{
+            top:-30px !important;
+        }
+        .txtInput{
+            margin-top:20px;
         }
     </style>
 <?php
@@ -83,10 +94,12 @@ $date = Carbon\Carbon::now();
                     <span id="form_output"></span>
                     <div class="form-group">
                         <label>ประเภทเอกสาร</label>
-                        {!! Form::select('eCode', $items, null, ['class' => 'form-control inputDoc', "id"=>"eCode",'placeholder' => 'เลือกประเภทเอกสาร']) !!}
+                        <div class="col-md-10">
+                            {!! Form::select('eCode', $items, null, ['class' => 'form-control inputDoc', "id"=>"eCode",'placeholder' => 'เลือกประเภทเอกสาร']) !!}
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>ประเภทเอกสาร</label>
+                        <label>เอกสาร</label>
                         <div class="col-md-6">
                             <input class="form-control" id="actionDoc" name='actionDoc' type="text" hidden>
                             <input class="form-control" id="idDoc" name='idDoc' type="text" hidden>
@@ -97,6 +110,12 @@ $date = Carbon\Carbon::now();
                                 <input id="eName" name='eName' class="file inputDoc" type="file" style="display: none;" multiple data-preview-file-type="any" data-upload-url="#" accept="application/pdf , image/gif, image/jpeg, image/jpg, image/png, image/bmp">
                                 <input class="form-control custom-file-upload-text" id="filename" name='filename' type="text" readOnly>
                             </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="txtLabel">ทะเบียนสมาชิก</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control inputDoc txtInput" id="eMember" name="eMember" placeholder="Search" />
                         </div>
                     </div>
                 </div>
@@ -163,8 +182,9 @@ $(document).ready(function () {
     $('.inputDoc').on('change',function() {
         var docCode = $('#eCode').val();
         var file = $('#eName').val();
+        var member = $('#eMember').val();
         var bt_action = $('#actionDoc').val();
-        if((docCode !='' && file !='' && bt_action == 'save') || bt_action == 'update')
+        if((docCode !='' && file !='' && member != '' && bt_action == 'save') || bt_action == 'update')
             $("#actionSave").removeAttr("disabled");
         else
             $("#actionSave").attr("disabled", true);
@@ -221,5 +241,14 @@ function addDocument(){
     $('#actionSave').text('Save');
     $('#actionDoc').val('save');
 }
+$('#eMember').typeahead({
+    source: function (query, process) {
+        return $.get("{{ url('home/autocomplete-search') }}", {
+            query: query
+        }, function (data) {
+            return process(data);
+        });
+    }
+});
 </script>
 @endsection

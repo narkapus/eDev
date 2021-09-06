@@ -23,6 +23,7 @@ Route::get('home', 'App\Http\Controllers\HomeController@index')->name('home')->m
 Route::post('home/store', 'App\Http\Controllers\HomeController@store')->name('home.store');
 Route::get('home/{id}/edit/','App\Http\Controllers\HomeController@edit');
 Route::get('home/preview/{id}/', 'App\Http\Controllers\HomeController@preview');
+Route::get('home/autocomplete-search', 'App\Http\Controllers\HomeController@autocompleteSearch');
 
 Route::resource('manage_users','App\Http\Controllers\ManageUsersController');
 Route::post('manage_users/{id}/edit/','App\Http\Controllers\ManageUsersController@edit');
