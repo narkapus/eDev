@@ -50,10 +50,10 @@ class SearchController extends Controller
             $conditons .= " and doc.eCode = ".$code;
         }
         if($userId){
-            $conditons .= " and users.Id = ".$userId;
+            $conditons .= " and m.mb_no like '%".$userId."%'";
         }
         if($fullName){
-            $conditons .= " and name like '%".$fullName."%'";
+            $conditons .= " and mb_name like '%".$fullName."%'";
         }
         if($date_from && $date_to){
             $conditons .= " and date(doc.created_at) between '".$date_from."' and '".$date_to."'";
@@ -61,10 +61,11 @@ class SearchController extends Controller
             $conditons .= " and date(doc.created_at) = '".$date_from."'";
         }
         // $post = $post->get();
-        $post = DB::select("select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at
+        $post = DB::select("select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at,mb_no,mb_name
                             from documents doc
                             join users on users.id = doc.userId
                             join master_documents as md on md.id = doc.eCode
+                            join edocuments.members as m on m.mb_no = doc.eMember
                             where doc.eStatus = 1 $conditons
                             order by doc.created_at desc");
 

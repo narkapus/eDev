@@ -25,7 +25,7 @@
                 </div>
                 <div class="row" style="margin-top: 1%">
                     <div class="col-md-2">
-                        <input type="text" class="form-control" placeholder="เลขที่สมาชิก" name="userId">
+                        <input type="text" class="form-control" placeholder="เลขทะเบียนสมาชิก" name="userId">
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" placeholder="ชื่อ-นามสกุล"  name="fullName">

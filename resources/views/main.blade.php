@@ -99,6 +99,12 @@ $date = Carbon\Carbon::now();
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="txtLabel">ทะเบียนสมาชิก</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control inputDoc txtInput" id="eMember" name="eMember" placeholder="Search" />
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label>เอกสาร</label>
                         <div class="col-md-6">
                             <input class="form-control" id="actionDoc" name='actionDoc' type="text" hidden>
@@ -110,12 +116,6 @@ $date = Carbon\Carbon::now();
                                 <input id="eName" name='eName' class="file inputDoc" type="file" style="display: none;" multiple data-preview-file-type="any" data-upload-url="#" accept="application/pdf , image/gif, image/jpeg, image/jpg, image/png, image/bmp">
                                 <input class="form-control custom-file-upload-text" id="filename" name='filename' type="text" readOnly>
                             </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="txtLabel">ทะเบียนสมาชิก</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control inputDoc txtInput" id="eMember" name="eMember" placeholder="Search" />
                         </div>
                     </div>
                 </div>
