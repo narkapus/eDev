@@ -100,7 +100,7 @@ $date = Carbon\Carbon::now();
                     </div>
                     <div class="form-group">
                         <label class="txtLabel">ทะเบียนสมาชิก</label>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <input type="text" class="form-control inputDoc txtInput" id="eMember" name="eMember" placeholder="Search" />
                         </div>
                     </div>

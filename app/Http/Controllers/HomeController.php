@@ -169,15 +169,15 @@ class HomeController extends Controller
             'Content-Disposition' => 'inline; filename="'.$filename.'"'
         ]) ;
     }
-    
+
     public function autocompleteSearch(Request $request)
     {
         $query = $request->get('query');
-        $filterResult = Members::select('mb_no')->where('mb_no', 'LIKE', ''. $query. '%')->take(10)->get();
+        $filterResult = Members::where('mb_no', 'LIKE', ''. $query. '%')->take(10)->get();
         $data = array();
         foreach ($filterResult as $result){
-            $data[] = $result->mb_no;
+            $data[] = $result->mb_no.'=> '.$result->mb_name;
         }
         return response()->json($data);
-    } 
+    }
 }
