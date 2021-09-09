@@ -176,7 +176,7 @@ class HomeController extends Controller
         $filterResult = Members::where('mb_no', 'LIKE', ''. $query. '%')->take(10)->get();
         $data = array();
         foreach ($filterResult as $result){
-            $data[] = $result->mb_no.'=> '.$result->mb_name;
+            $data[] = $result->mb_no.' => '.$result->mb_name;
         }
         return response()->json($data);
     }
