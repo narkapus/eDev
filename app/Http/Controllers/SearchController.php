@@ -61,7 +61,7 @@ class SearchController extends Controller
             $conditons .= " and date(doc.created_at) = '".$date_from."'";
         }
         // $post = $post->get();
-        $post = DB::select("select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at,mb_no,mb_name
+        $post = DB::select("select doc.id,doc.eCode,md.eName AS mdName,doc.eName,eFile,name,doc.created_at,doc.updated_at,doc.eMember,mb_name
                             from documents doc
                             join users on users.id = doc.userId
                             join master_documents as md on md.id = doc.eCode

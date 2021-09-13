@@ -58,9 +58,11 @@
                     <tbody>
                         <thead>
                             <tr>
-                                <th>รหัสเอกสาร</th>
+                                <th>ลำดับ</th>
                                 <th>ประเภทเอกสาร</th>
                                 <th>ชื่อเอกสาร</th>
+                                <th>เลขทะเบียนสมาชิก</th>
+                                <th>ชื่อสมาชิก</th>
                                 <th>ผู้อัพโหลด</th>
                                 <th>วันที่อัพโหลด</th>
                                 <th>ดาวน์โหลด</th>
@@ -88,6 +90,8 @@ $(document).ready(function () {
             {data: "DT_RowIndex" },
             {data: 'mdName', name: 'mdName'},
             {data: 'download', name: 'download'},
+            {data: 'eMember', name: 'eMember'},
+            {data: 'mb_name', name: 'mb_name'},
             {data: 'name', name: 'name'},
             {data: 'created_at', name: 'created_at',
                 "render": function (data) {

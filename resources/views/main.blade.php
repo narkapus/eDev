@@ -61,10 +61,12 @@ $date = Carbon\Carbon::now();
               <table id="dataTable" class="table table-striped table-hover table-condensed" style="text-align: center;width:100%">
                 <thead>
                   <tr>
-                        <td style="width:10%">ลำดับ</td>
+                        <td style="width:5%">ลำดับ</td>
                         <td style="width:30%">ประเภทเอกสาร</td>
                         <td style="width:15%">เอกสาร</td>
-                        <td style="width:15%">ผู้บันทึก</td>
+                        <td style="width:12%">เลขทะเบียนสมาชิก</td>
+                        <td style="width:15%">ชื่อสมาชิก</td>
+                        <td style="width:10%">ผู้บันทึก</td>
                         <td style="width:10%">บันทึกวันที่</td>
                         <td style="width:10%">แก้ไขวันที่</td>
                         <td style="width:7%">ดาวน์โหลด</td>
@@ -138,6 +140,8 @@ $(document).ready(function () {
             {data: "DT_RowIndex" },
             {data: 'mdName', name: 'mdName'},
             {data: 'download', name: 'download'},
+            {data: 'eMember', name: 'eMember'},
+            {data: 'mb_name', name: 'mb_name'},
             {data: 'name', name: 'name'},
             {data: 'created_at', name: 'created_at',
                 "render": function (data) {
