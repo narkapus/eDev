@@ -25,6 +25,10 @@ Route::get('home/{id}/edit/','App\Http\Controllers\HomeController@edit');
 Route::get('home/preview/{id}/', 'App\Http\Controllers\HomeController@preview');
 Route::get('home/autocomplete-search', 'App\Http\Controllers\HomeController@autocompleteSearch');
 
+
+Route::resource('create_users','App\Http\Controllers\CreateUsersController');
+Route::post('create_users/{id}/edit/','App\Http\Controllers\CreateUsersController@edit');
+
 Route::resource('manage_users','App\Http\Controllers\ManageUsersController');
 Route::post('manage_users/{id}/edit/','App\Http\Controllers\ManageUsersController@edit');
 Route::resource('manage','App\Http\Controllers\ManageDocumentController');

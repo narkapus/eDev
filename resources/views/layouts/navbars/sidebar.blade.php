@@ -29,6 +29,12 @@
             <p>{{ __('จัดการประเภทเอกสาร') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'create_users' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('create_users.index') }}">
+          <i class="material-icons">person_add</i>
+            <p>{{ __('เพิ่มสมาชิกใหม่') }}</p>
+        </a>
+      </li>
       @if(Auth::user()->role == 1)
       <li class="nav-item{{ $activePage == 'manage_users' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('manage_users.index') }}">

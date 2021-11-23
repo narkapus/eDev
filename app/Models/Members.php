@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Members extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'mb_id';
+    protected $primaryKey = 'mb_no';
 
     protected $fillable = [
-        'mb_id',
+        'mb_no',
         'mb_name',
+    ];
+
+    protected $casts = [
+        'mb_no' => 'string',
     ];
 }
